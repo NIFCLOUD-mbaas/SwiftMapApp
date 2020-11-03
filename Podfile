@@ -6,7 +6,7 @@ target 'SwiftMapApp' do
   use_frameworks!
 
   # Pods for SwiftMapApp
-  pod 'NCMB', :git => 'https://github.com/NIFCloud-mbaas/ncmb_ios.git'
+  pod 'NCMB', :git => 'https://github.com/NIFCLOUD-mbaas/ncmb_ios.git'
   pod 'GoogleMaps', '4.0.0'
 
 end
