@@ -19,9 +19,9 @@
 ## 動作環境
 ※下記内容で動作確認をしています
 
-* Mac OS X 10.10.5(Yosemite)
-* Xcode ver. 7.2.1
-* iPhone6 ver. 8.2
+* MacOS 10.15.6 (Catalina)
+* Xcode ver. 12.0
+* iPhone 11 pro max ver. 14.0.1
 * iPad mini ver.9.2
  * このサンプルアプリは、端末の位置情報を使用するため、実機ビルドが必要です
 
