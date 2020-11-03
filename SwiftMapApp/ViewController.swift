@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  SwiftMapApp
 //
-//  Created by Natsumo Ikeda on 2016/08/10.
+//  Created by HungNV on 11/3/20.
 //  Copyright 2017 FUJITSU CLOUD TECHNOLOGIES LIMITED All Rights Reserved.
 //
 
@@ -12,6 +12,7 @@ import GoogleMaps
 import CoreLocation
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
+
     // Google Map
     @IBOutlet weak var mapView: GMSMapView!
     // TextField
@@ -65,9 +66,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             locationManager.stopUpdatingLocation()
         }
     }
-    
+
     // 位置情報許可状況確認メソッド
-    private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .notDetermined:
             // 初回のみ許可要求
@@ -94,7 +95,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     // 位置情報が更新されるたびに呼ばれるメソッド
-    private func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // 値をローカルに保存
         myLocation = locations[0]
         // TextFieldに表示
@@ -337,7 +338,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     marker.icon = UIImage.init(data: data!)
                 }
                 // マーカー表示時のアニメーションを設定
-                marker.appearAnimation = kGMSMarkerAnimationPop
+                marker.appearAnimation = .pop
                 // マーカーを表示するマップの設定
                 marker.map = self.mapView
             }
@@ -345,7 +346,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             // アイコン
             marker.icon = GMSMarker.markerImage(with: unwrappedColor)
             // マーカー表示時のアニメーションを設定
-            marker.appearAnimation = kGMSMarkerAnimationPop
+            marker.appearAnimation = .pop
             // マーカーを表示するマップの設定
             marker.map = mapView
         }
