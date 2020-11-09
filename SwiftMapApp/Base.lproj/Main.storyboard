@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -61,7 +60,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
                                             <constraint firstItem="XBl-jx-Z1L" firstAttribute="leading" secondItem="M4z-j2-p9v" secondAttribute="trailing" constant="8" id="2gi-e5-3cB"/>
                                             <constraint firstItem="XBl-jx-Z1L" firstAttribute="width" secondItem="qlN-sU-RhW" secondAttribute="width" multiplier="0.68" id="ISC-6Y-r6M"/>
@@ -86,7 +85,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
                                             <constraint firstItem="nNP-GH-oJK" firstAttribute="centerY" secondItem="YGb-gK-K1r" secondAttribute="centerY" id="9f5-Tr-9vC"/>
                                             <constraint firstItem="0Mz-MD-uwa" firstAttribute="leading" secondItem="YGb-gK-K1r" secondAttribute="leading" constant="5" id="C7j-RO-3oq"/>
@@ -112,7 +111,7 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gxu-we-cYp" customClass="GMSMapView">
                                 <rect key="frame" x="0.0" y="128" width="414" height="654"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wrq-jS-IIc">
                                 <rect key="frame" x="0.0" y="782" width="414" height="31"/>
@@ -153,7 +152,7 @@
                                             <action selector="showShopsWithSender:" destination="BYZ-38-t0r" id="H0o-TJ-1hi"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="nifty" id="TN1-hY-8gk">
+                                    <barButtonItem title="Nifcloud" id="TN1-hY-8gk">
                                         <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <action selector="showNiftyWithSender:" destination="BYZ-38-t0r" id="QYK-GJ-Ws2"/>
@@ -162,8 +161,7 @@
                                 </items>
                             </toolbar>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="klC-IG-cW5" firstAttribute="top" secondItem="Wrq-jS-IIc" secondAttribute="bottom" id="5YM-b4-OVK"/>
                             <constraint firstItem="rpD-xz-cIg" firstAttribute="top" secondItem="tBz-It-hlT" secondAttribute="bottom" id="EhY-7S-K5u"/>
@@ -182,6 +180,7 @@
                             <constraint firstItem="tBz-It-hlT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="vVl-Ev-uSP"/>
                             <constraint firstItem="klC-IG-cW5" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ylJ-Qb-QMA"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="label" destination="XUL-H1-0na" id="VKV-0b-Q8e"/>
@@ -198,8 +197,5 @@
     <resources>
         <image name="shop_icon" width="25" height="25"/>
         <image name="upload" width="25" height="25"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
