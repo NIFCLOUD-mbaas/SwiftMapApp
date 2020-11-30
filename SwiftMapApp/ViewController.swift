@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  SwiftMapApp
 //
-//  Created by Natsumo Ikeda on 2016/08/10.
+//  Created by HungNV on 11/3/20.
 //  Copyright 2017 FUJITSU CLOUD TECHNOLOGIES LIMITED All Rights Reserved.
 //
 
@@ -12,6 +12,7 @@ import GoogleMaps
 import CoreLocation
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
+
     // Google Map
     @IBOutlet weak var mapView: GMSMapView!
     // TextField
@@ -27,7 +28,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     let SHINJUKU = (title:"新宿駅",
                     snippet:"Shinjuku Station",
                     location:NCMBGeoPoint(latitude: 35.690549, longitude: 139.699550), // 位置情報
-                    color:UIColor.greenColor()
+                    color:UIColor.green
     )
     // ニフティの情報
     let NIFTY = (title:"ニフティ株式会社",
@@ -53,11 +54,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
         
         // 起動時は新宿駅に設定
-        showMap(SHINJUKU.location)
-        addColorMarker(SHINJUKU.location, title: SHINJUKU.title, snippet: SHINJUKU.snippet, color: SHINJUKU.color)
+        showMap(location: SHINJUKU.location!)
+        addColorMarker(location: SHINJUKU.location!, title: SHINJUKU.title, snippet: SHINJUKU.snippet, color: SHINJUKU.color)
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         // 位置情報取得の停止
@@ -65,35 +66,36 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             locationManager.stopUpdatingLocation()
         }
     }
-    
+
     // 位置情報許可状況確認メソッド
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
-        case .NotDetermined:
+        case .notDetermined:
             // 初回のみ許可要求
             locationManager.requestWhenInUseAuthorization()
-        case .Restricted, .Denied:
+        case .restricted, .denied:
             // 位置情報許可を依頼するアラートの表示
             alertLocationServiceDisabled()
-        case .AuthorizedAlways, .AuthorizedWhenInUse:
+        case .authorizedAlways, .authorizedWhenInUse:
             break
+        default: break
         }
     }
     
     // 位置情報許可依頼アラート
     func alertLocationServiceDisabled() {
-        let alert = UIAlertController(title: "位置情報が許可されていません", message: "位置情報サービスを有効にしてください", preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "設定", style: .Default, handler: { (action: UIAlertAction) -> Void in
-            let url = NSURL(string: UIApplicationOpenSettingsURLString)!
-            UIApplication.sharedApplication().openURL(url)
+        let alert = UIAlertController(title: "位置情報が許可されていません", message: "位置情報サービスを有効にしてください", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "設定", style: .default, handler: { (action: UIAlertAction) -> Void in
+            let url = NSURL(string: UIApplication.openSettingsURLString)!
+            UIApplication.shared.openURL(url as URL)
         }))
-        alert.addAction(UIAlertAction(title: "キャンセル", style: .Cancel, handler: { (action: UIAlertAction) -> Void in
+        alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: { (action: UIAlertAction) -> Void in
         }))
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
     // 位置情報が更新されるたびに呼ばれるメソッド
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // 値をローカルに保存
         myLocation = locations[0]
         // TextFieldに表示
@@ -113,16 +115,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             label.text = "位置情報が取得できました"
             
             // アラートを表示
-            let alert = UIAlertController(title: "現在地を保存します", message: "情報を入力してください", preferredStyle: .Alert)
+            let alert = UIAlertController(title: "現在地を保存します", message: "情報を入力してください", preferredStyle: .alert)
             // UIAlertControllerにtextFieldを2つ追加
-            alert.addTextFieldWithConfigurationHandler { (textField: UITextField!) -> Void in
+            alert.addTextField { (textField: UITextField!) -> Void in
                 textField.placeholder = "タイトル"
             }
-            alert.addTextFieldWithConfigurationHandler { (textField: UITextField!) -> Void in
+            alert.addTextField { (textField: UITextField!) -> Void in
                 textField.placeholder = "コメント"
             }
             // アラートの保存押下時の処理
-            alert.addAction(UIAlertAction(title: "保存", style: .Default) { (action: UIAlertAction!) -> Void in
+            alert.addAction(UIAlertAction(title: "保存", style: .default) { (action: UIAlertAction!) -> Void in
                 // 入力値の取得
                 let title = alert.textFields![0].text
                 let snippet = alert.textFields![1].text
@@ -135,56 +137,57 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 // NCMBObjectを生成
                 let object = NCMBObject(className: "GeoPoint")
                 // 値を設定
-                object.setObject(geoPoint, forKey: "geolocation")
-                object.setObject(title, forKey: "title")
-                object.setObject(snippet, forKey: "snippet")
+                object!.setObject(geoPoint, forKey: "geolocation")
+                object!.setObject(title, forKey: "title")
+                object!.setObject(snippet, forKey: "snippet")
+
                 // 保存の実施
-                object.saveInBackgroundWithBlock { (error: NSError!) -> Void in
+                object!.saveInBackground { (error: Error?) in
                     if error != nil {
                         // 位置情報保存失敗時の処理
-                        print("位置情報の保存に失敗しました：\(error.code)")
-                        self.label.text = "位置情報の保存に失敗しました：\(error.code)"
+                        print("位置情報の保存に失敗しました：\(error)")
+                        self.label.text = "位置情報の保存に失敗しました：\(error)"
                     } else {
                         // 位置情報保存成功時の処理
-                        print("位置情報の保存に成功しました：[\(geoPoint.latitude), \(geoPoint.longitude)]")
-                        self.label.text = "位置情報の保存に成功しました：[\(geoPoint.latitude), \(geoPoint.longitude)]"
+                        print("位置情報の保存に成功しました：[\(geoPoint!.latitude), \(geoPoint!.longitude)]")
+                        self.label.text = "位置情報の保存に成功しました：[\(geoPoint!.latitude), \(geoPoint!.longitude)]"
                         // マーカーを設置
-                        self.addColorMarker(geoPoint, title: object.objectForKey("title") as! String, snippet: object.objectForKey("snippet") as! String, color: UIColor.blueColor())
+                        self.addColorMarker(location: geoPoint!, title: object!.object(forKey: "title") as! String, snippet: object!.object(forKey: "snippet") as! String, color: UIColor.blue)
                     }
                 }
             })
             // アラートのキャンセル押下時の処理
-            alert.addAction(UIAlertAction(title: "キャンセル", style: .Default) { (action: UIAlertAction!) -> Void in
+            alert.addAction(UIAlertAction(title: "キャンセル", style: .default) { (action: UIAlertAction!) -> Void in
                 self.label.text = "保存がキャンセルされました"
                 print("保存がキャンセルされました")
             })
-            presentViewController(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
         }
     }
     
     // 「保存した場所を見る」ボタン押下時の処理
     @IBAction func getLocationData(sender: UIBarButtonItem) {
         // Action Sheet
-        let actionSheet = UIAlertController(title: "保存した場所を地図に表示します", message: "検索範囲を選択してください", preferredStyle: .ActionSheet)
+        let actionSheet = UIAlertController(title: "保存した場所を地図に表示します", message: "検索範囲を選択してください", preferredStyle: .actionSheet)
         // iPadの場合
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             print("iPad使用")
             actionSheet.popoverPresentationController!.sourceView = self.view;
-            actionSheet.popoverPresentationController!.sourceRect = CGRectMake(self.view.bounds.size.width*0.5, self.view.bounds.size.height*0.9, 1.0, 1.0);
-            actionSheet.popoverPresentationController!.permittedArrowDirections = UIPopoverArrowDirection.Down
+            actionSheet.popoverPresentationController!.sourceRect = CGRect.init(x: self.view.bounds.size.width*0.5, y: self.view.bounds.size.height*0.9, width: 1.0, height: 1.0)
+            actionSheet.popoverPresentationController!.permittedArrowDirections = UIPopoverArrowDirection.down
         }
         
         // キャンセル
-        actionSheet.addAction(UIAlertAction(title: "キャンセル", style: .Cancel) { (action: UIAlertAction!) -> Void in
+        actionSheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel) { (action: UIAlertAction!) -> Void in
             })
         // 検索条件を設定
         for i in 0..<SEAECH_RANGE.count {
-            actionSheet.addAction(UIAlertAction(title: SEAECH_RANGE[i], style: .Default) { (action: UIAlertAction!) -> Void in
-                self.getLocaion(action.title!)
+            actionSheet.addAction(UIAlertAction(title: SEAECH_RANGE[i], style: .default) { (action: UIAlertAction!) -> Void in
+                self.getLocaion(title: action.title!)
                 })
         }
         // アラートを表示する
-        presentViewController(actionSheet, animated: true, completion: nil)
+        present(actionSheet, animated: true, completion: nil)
     }
     
     /** 【mBaaS：データストア(位置情報)】保存データの取得 **/
@@ -197,8 +200,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         // 現在地
         let geoPoint = NCMBGeoPoint(latitude: myLocation.coordinate.latitude, longitude: myLocation.coordinate.longitude)
         // それぞれのクラスの検索クエリを作成
-        let queryGeoPoint = NCMBQuery(className: "GeoPoint")
-        let queryShop = NCMBQuery(className: "Shop")
+        let queryGeoPoint:NCMBQuery = NCMBQuery(className: "GeoPoint")
+        let queryShop:NCMBQuery = NCMBQuery(className: "Shop")
         // 検索条件を設定
         switch title {
         case SEAECH_RANGE[0]:
@@ -224,54 +227,62 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             break
         }
         // データストアを検索
-        queryGeoPoint.findObjectsInBackgroundWithBlock({ (objects: Array!, error: NSError!) -> Void in
+
+        queryGeoPoint.findObjectsInBackground { (result: [Any]?, error) in
             if error != nil {
                 // 検索失敗時の処理
-                print("GeoPointクラスの検索に失敗しました:\(error.code)")
-                self.label.text = "GeoPointクラスの検索に失敗しました:\(error.code)"
+                print("GeoPointクラスの検索に失敗しました:\(error)")
+                self.label.text = "GeoPointクラスの検索に失敗しました:\(error)"
             } else {
                 // 検索成功時の処理
                 print("GeoPointクラスの検索に成功しました")
                 self.label.text = "GeoPointクラスの検索に成功しました"
-                for object in objects {
-                    self.addColorMarker(object.objectForKey("geolocation") as! NCMBGeoPoint, title: object.objectForKey("title") as! String, snippet: object.objectForKey("snippet") as! String, color: UIColor.blueColor())
+                if let objects = result as? [NCMBObject] {
+                    for object:NCMBObject in objects {
+                        self.addColorMarker(location: object.object(forKey:"geolocation") as! NCMBGeoPoint, title: object.object(forKey:"title") as! String, snippet: object.object(forKey:"snippet") as! String, color: UIColor.blue)
+                    }
                 }
+                
             }
-        })
-        queryShop.findObjectsInBackgroundWithBlock({ (objects: Array!, error: NSError!) -> Void in
+        }
+        queryShop.findObjectsInBackground { (result: [Any]?, error) in
             if error != nil {
                 // 検索失敗時の処理
-                print("Shopクラスの検索に失敗しました:\(error.code)")
-                self.label.text = "Shopクラスの検索に失敗しました:\(error.code)"
+                print("Shopクラスの検索に失敗しました:\(error)")
+                self.label.text = "Shopクラスの検索に失敗しました:\(error)"
             } else {
                 // 検索成功時の処理
                 print("Shopクラスの検索に成功しました")
                 self.label.text = "Shopクラスの検索に成功しました"
-                for object in objects {
-                    self.addImageMarker(object.objectForKey("geolocation") as! NCMBGeoPoint, title: object.objectForKey("shopName") as! String, snippet: object.objectForKey("category") as! String, imageName: object.objectForKey("image") as! String)
+                if let objects = result as? [NCMBObject] {
+                    for object in objects {
+                        self.addImageMarker(location: object.object(forKey: "geolocation") as! NCMBGeoPoint, title: object.object(forKey:"shopName") as! String, snippet: object.object(forKey:"category") as! String, imageName: object.object(forKey:"image") as! String)
+                    }
                 }
             }
-        })
+        }
     }
     
     // 「お店（スプーンとフォーク）」ボタン押下時の処理
     @IBAction func showShops(sender: UIBarButtonItem) {
         // Shopデータの取得
-        getShopDataWithBlock({ (objects: Array!, error: NSError!) -> Void in
+        getShopDataWithBlock { (result, error) in
             if error != nil {
                 // 検索失敗時の処理
-                print("Shop情報の取得に失敗しました:\(error.code)")
+                print("Shop情報の取得に失敗しました:\(error)")
                 self.label.text = "Shop情報の取得に失敗しました"
             } else {
                 // 検索成功時の処理
                 print("Shop情報の取得に成功しました")
                 self.label.text = "Shop情報の取得に成功しました"
                 // マーカーを設定
-                for shop in objects {
-                    self.addImageMarker(shop.objectForKey("geolocation") as! NCMBGeoPoint, title: shop.objectForKey("shopName") as! String, snippet: shop.objectForKey("category") as! String, imageName: shop.objectForKey("image") as! String)
+                if let objects = result as? [NCMBObject] {
+                    for shop in objects {
+                        self.addImageMarker(location: shop.object(forKey: "geolocation") as! NCMBGeoPoint, title: shop.object(forKey: "shopName") as! String, snippet: shop.object(forKey: "category") as! String, imageName: shop.object(forKey: "image") as! String)
+                    }
                 }
             }
-        })
+        }
     }
     
     /** 【mBaaS：データストア】「Shop」クラスのデータを取得 **/
@@ -279,7 +290,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         // 「Shop」クラスの検索クエリを作成
         let query = NCMBQuery(className: "Shop")
         // データストアを検索
-        query.findObjectsInBackgroundWithBlock({ (objects: Array!, error: NSError!) -> Void in
+        query?.findObjectsInBackground({ (objects:[Any]?, error) in
             block(objects,error)
         })
     }
@@ -287,16 +298,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     // 「nifty」ボタン押下時の処理
     @IBAction func showNifty(sender: UIBarButtonItem) {
         // マーカーを設定
-        addImageMarker(NIFTY.location, title: NIFTY.title, snippet: NIFTY.snippet, imageName: NIFTY.imageName)
+        addImageMarker(location: NIFTY.location!, title: NIFTY.title, snippet: NIFTY.snippet, imageName: NIFTY.imageName)
     }
     
     // 地図を表示
     func showMap (location: NCMBGeoPoint) {
         // cameraの作成と設定
-        let camera = GMSCameraPosition.cameraWithLatitude(location.latitude, longitude: location.longitude, zoom: ZOOM)
+        let camera = GMSCameraPosition.camera(withLatitude: location.latitude, longitude: location.longitude, zoom: ZOOM)
         mapView.camera = camera
         // 現在地の有効化
-        mapView.myLocationEnabled = true
+        mapView.isMyLocationEnabled = true
         // 現在地を示す青い点を表示
         mapView.settings.myLocationButton = true
     }
@@ -314,39 +325,39 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         if let unwrappedImageName = imageName {
             /** 【mBaaS：ファイルストア】アイコン画像データを取得 **/
             // ファイル名を設定
-            let imageFile = NCMBFile.fileWithName(unwrappedImageName, data: nil)
+            let imageFile:NCMBFile = NCMBFile.file(withName: unwrappedImageName, data: nil) as! NCMBFile
             // ファイルを検索
-            imageFile.getDataInBackgroundWithBlock{ (data: NSData!, error: NSError!) -> Void in
+            imageFile.getDataInBackground { (data, error) in
                 if error != nil {
                     // ファイル取得失敗時の処理
-                    print("\(snippet)icon画像の取得に失敗しました:\(error.code)")
+                    print("\(snippet)icon画像の取得に失敗しました:\(error)")
                 } else {
                     // ファイル取得成功時の処理
                     print("\(snippet)icon画像の取得に成功しました")
                     // 画像アイコン
-                    marker.icon = UIImage.init(data: data)
+                    marker.icon = UIImage.init(data: data!)
                 }
                 // マーカー表示時のアニメーションを設定
-                marker.appearAnimation = kGMSMarkerAnimationPop
+                marker.appearAnimation = .pop
                 // マーカーを表示するマップの設定
                 marker.map = self.mapView
             }
         } else if let unwrappedColor = color {
             // アイコン
-            marker.icon = GMSMarker.markerImageWithColor(unwrappedColor)
+            marker.icon = GMSMarker.markerImage(with: unwrappedColor)
             // マーカー表示時のアニメーションを設定
-            marker.appearAnimation = kGMSMarkerAnimationPop
+            marker.appearAnimation = .pop
             // マーカーを表示するマップの設定
             marker.map = mapView
         }
     }
     // マーカー作成 (カラーアイコン)
     func addColorMarker(location: NCMBGeoPoint, title: String, snippet: String, color: UIColor) {
-        addMarker(location, title: title, snippet: snippet, color: color, imageName: nil)
+        addMarker(location: location, title: title, snippet: snippet, color: color, imageName: nil)
     }
     // マーカー作成（画像アイコン）
     func addImageMarker(location: NCMBGeoPoint, title: String, snippet: String, imageName: String) {
-        addMarker(location, title: title, snippet: snippet, color: nil, imageName: imageName)
+        addMarker(location: location, title: title, snippet: snippet, color: nil, imageName: imageName)
     }
     
     // 「ゴミ箱」ボタン押下時の処理

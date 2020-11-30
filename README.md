@@ -19,9 +19,9 @@
 ## 動作環境
 ※下記内容で動作確認をしています
 
-* Mac OS X 10.10.5(Yosemite)
-* Xcode ver. 7.2.1
-* iPhone6 ver. 8.2
+* MacOS 10.15.6 (Catalina)
+* Xcode ver. 12.0
+* iPhone 11 pro max ver. 14.0.1
 * iPad mini ver.9.2
  * このサンプルアプリは、端末の位置情報を使用するため、実機ビルドが必要です
 
@@ -153,7 +153,7 @@ $ pod install --no-repo-update
 ### 5. [Google Cloud platform](https://console.cloud.google.com/)でプロジェクトの作成とAPIキーの発行、Google Maps SDK for iOS の許可
 
 *  [Google Cloud platform](https://console.cloud.google.com/)にログインします
-* プリジェクトを作成します
+* プロジェクトを作成します
  * プロジェクト名は任意で作成します　例）MapApp
 
 ![画像GCP001](/readme-img/GCP001.png)
@@ -162,7 +162,6 @@ $ pod install --no-repo-update
 
 ![画像GCP002](/readme-img/GCP002.png)
 ![画像GCP003](/readme-img/GCP003.png)
-![画像GCP004](/readme-img/GCP004.png)
 
 * Google Maps SDK for iOSを有効にします
 
